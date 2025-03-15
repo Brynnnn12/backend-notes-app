@@ -1,9 +1,7 @@
 require("dotenv").config();
 
-const config = require("./config.json");
 const mongoose = require("mongoose");
 
-mongoose.connect(config.connectionString);
 
 const User = require("./models/User");
 const Notes = require("./models/Notes");
@@ -22,10 +20,10 @@ app.use(
   })
 );
 
-app.get("/", (req, res) => {
-  res.json("Hello World!");
-});
-
+// Gunakan MongoDB URI dari .env
+mongoose.connect(process.env.MONGO_URI)
+    .then(() => console.log('Connected to MongoDB'))
+    .catch(err => console.error('Could not connect to MongoDB', err));
 app.post("/create-account", async (req, res) => {
   const { fullname, email, password } = req.body;
 
